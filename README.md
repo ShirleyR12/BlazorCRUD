@@ -16,9 +16,9 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 - .NET 6 SDK: [Download .NET 6](https://dotnet.microsoft.com/download/dotnet/6.0)
 
 ## NuGets necessários
-> `microsoft.entityframeworkcore`
-> `microsoft.entityframeworkcore.design`
-> `microsoft.entityframeworkcore.sqlserver`
+> `microsoft.entityframeworkcore` <br/>
+> `microsoft.entityframeworkcore.design` <br/>
+> `microsoft.entityframeworkcore.sqlserver` <br/>
 > `microsoft.entityframeworkcore.sqllite`
 
 ## Como executar o projeto
@@ -38,7 +38,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 6. Migration ( certifique que está no diretório: cd .\BlazerCRUD\Server )
 > `dotnet-ef`  <br/>
 > `dotnet tool install --global dotnet-ef`  | se estiver intalado desinstale e instale novamente:  `dotnet tool uninstall --global dotnet-ef` <br/>
-> `dotnet ef migrations add Initial `
+> `dotnet ef migrations add Initial ` <br/>
 > `dotnet ef database update `
 
 ## BD - DBeave SQLLite
