@@ -1,0 +1,67 @@
+﻿@page "/superheroes"
+@inject ISuperHeroService SuperHeroService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Super Heroes</PageTitle>
+
+<h3>Super Heroes</h3>
+
+<button class="btn btn-success" @onclick="CreateNewHero"><i class="oi oi-person"> Criar Novo Heroi</i></button>
+<p/>
+@if (SuperHeroService.Heroes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Nome de Heroi</th>
+                <th>Comic</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var hero in SuperHeroService.Heroes){
+            <tr>
+                <td>@hero.FisrtName</td>
+                <td>@hero.LastName</td>
+                <td>@hero.HeroName</td>
+                <td>@hero.Comic.Name</td>
+                <td>
+                     <button class="btn btn-primary" title="Editar" @onclick="(() => ShowHero(hero.Id))">
+                         <i class="oi oi-pencil"></i>
+                     </button>
+                     <button class="btn btn-danger" title="Deletar" @onclick="(() => ShowHeroDelete(hero.Id,3))">
+                         <i class="oi oi-trash"></i>
+                     </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await SuperHeroService.GetSuperHores();
+    }
+    void CreateNewHero()
+    {
+        NavigationManager.NavigateTo("/hero");
+    }
+
+    void ShowHero(int id)
+    {
+        NavigationManager.NavigateTo($"/hero/{id}");
+    }
+
+    void ShowHeroDelete(int id, int action)
+    {
+        NavigationManager.NavigateTo($"/hero/{id}/{action}");
+    }
+}

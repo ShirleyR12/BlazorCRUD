@@ -1,0 +1,96 @@
+﻿@page "/hero"
+@page "/hero/{id:int}"
+@page "/hero/{id:int}/{action:int}"
+@using BlazorFullStack.Shared
+@inject ISuperHeroService SuperHeroService
+@using System.ComponentModel.DataAnnotations
+
+    @if(Id == null)
+    {
+        <PageTitle>Criar um Super Hero</PageTitle>
+        <h3>Criar um Super Hero</h3>
+    }else{
+        <PageTitle>Editar @hero.HeroName</PageTitle>
+        <h3>Editar @hero.HeroName</h3>
+    }
+
+<EditForm Model="hero"  OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <div>
+        <label>Nome</label>
+        <InputText id="firstname" @bind-Value="hero.FisrtName" class="form-control" />
+        <ValidationMessage For="@(() => hero.FisrtName)" />
+    </div>
+    <div>
+        <label>Sobrenome</label>
+        <InputText id="lastname" @bind-Value="hero.LastName" class="form-control" />
+        <ValidationMessage For="@(() => hero.LastName)" />
+    </div>
+    <div>
+        <label>Nome de Heroi</label>
+        <InputText id="heroname" @bind-Value="hero.HeroName" class="form-control" />
+        <ValidationMessage For="@(() => hero.HeroName)" />
+    </div>
+    <div>
+        <label>Comic</label>
+        <InputSelect @bind-Value="hero.ComicId" class="form-select" >
+            @foreach (var comic in SuperHeroService.Comics)
+            {
+                <option value="@comic.Id">@comic.Name</option>
+            }
+        </InputSelect>
+    </div>
+<br/>
+@if (Action == null)
+{
+     <button type="submit" class="btn btn-primary">@btnText</button>
+}
+    @if (Id != null && Action != null)
+    {
+    <button type="button" class="btn btn-danger" @onclick="DeleteHero">Deletar Heroi</button>
+}
+
+</EditForm>
+
+@code{
+    [Parameter]
+    public int? Action { get; set; }
+    [Parameter]
+    public int? Id { get; set; }
+    string btnText => Id == null ? "Salvar Heroi" : "Atualizar Heroi";
+    private SuperHero hero;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id == null)
+            hero = new SuperHero { Comic = new Comic() };
+       else
+            await SuperHeroService.GetSingleHero((int)Id);
+
+        await SuperHeroService.GetComics();
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == null)
+        {
+            hero.Comic = SuperHeroService.Comics[0];
+            hero.ComicId = hero.Comic.Id;
+        } else
+            hero = await SuperHeroService.GetSingleHero((int)Id);
+    }
+
+    async Task HandleSubmit()
+    {
+        if(Id == null)
+            await SuperHeroService.CreateHero(hero);
+        else
+            await SuperHeroService.UpdateHero(hero);
+    }
+
+    async Task DeleteHero()
+    {
+        if (Id != null)
+        await SuperHeroService.DeleteHero(hero.Id);
+    }
+
+}
