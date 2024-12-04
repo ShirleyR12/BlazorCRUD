@@ -1,4 +1,4 @@
-# BlazorCRUD
+## BlazorCRUD
 CRUD PROJECT IN BLAZOR
 ## Telas
 <img width="749" alt="01" src="https://github.com/ShirleyR12/BlazorCRUD/assets/56793368/488cd146-a857-4d0e-8016-59a85e6f3d26">
